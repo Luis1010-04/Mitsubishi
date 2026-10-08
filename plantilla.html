@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Acciones Correctivas y Preventivas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            color: #000;
+            margin: 20px;
+        }
+        .header-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 4px 6px;
+            vertical-align: top;
+        }
+        .bg-title {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .center {
+            text-align: center;
+        }
+        .field-label {
+            font-weight: bold;
+            display: inline-block;
+        }
+        .content-box {
+            min-height: 40px;
+            white-space: pre-wrap;
+        }
+        .footer-code {
+            font-size: 9px;
+            color: #444;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-title">
+        REGISTRO DE ACCIONES CORRECTIVAS Y PREVENTIVAS
+    </div>
+
+    <!-- ==========================================
+         FASE 1: ENCABEZADO Y DATOS GENERALES
+         Mapeo del objeto JSON: json.encabezado
+    =========================================== -->
+    <table>
+        <tr>
+            <td style="width: 12%;"><span class="field-label">Sistema:</span></td>
+            <!-- json.encabezado.sistema -->
+            <td style="width: 18%;"><?php echo htmlspecialchars($ticket['encabezado']['sistema'] ?? ''); ?></td>
+            
+            <td style="width: 15%;"><span class="field-label">Nº AC-19-</span></td>
+            <!-- json.encabezado.num_ac -->
+            <td style="width: 15%;"><?php echo htmlspecialchars($ticket['encabezado']['num_ac'] ?? ''); ?></td>
+            
+            <td style="width: 15%;"><span class="field-label">Nº REP NC/ELEM:</span></td>
+            <!-- json.encabezado.num_rep_nc -->
+            <td style="width: 10%;"><?php echo htmlspecialchars($ticket['encabezado']['num_rep_nc'] ?? ''); ?></td>
+            
+            <td style="width: 8%;"><span class="field-label">Item:</span></td>
+            <!-- json.encabezado.item -->
+            <td style="width: 7%;"><?php echo htmlspecialchars($ticket['encabezado']['item'] ?? ''); ?></td>
+        </tr>
+        <tr>
+            <td><span class="field-label">Producto:</span></td>
+            <!-- json.encabezado.producto -->
+            <td><?php echo htmlspecialchars($ticket['encabezado']['producto'] ?? ''); ?></td>
+            
+            <td colspan="2"></td>
+            
+            <td><span class="field-label">Fecha:</span></td>
+            <!-- json.encabezado.fecha -->
+            <td><?php echo htmlspecialchars($ticket['encabezado']['fecha'] ?? ''); ?></td>
+            
+            <td><span class="field-label">A.C. / A.P.</span></td>
+            <!-- json.encabezado.tipo -->
+            <td class="center">
+                <?php echo ($ticket['encabezado']['tipo'] ?? '') === 'AC' ? '[X] AC' : '[X] AP'; ?>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <span class="field-label">DESCRIPCIÓN:</span><br>
+                <!-- json.encabezado.descripcion -->
+                <div class="content-box">
+                    <?php echo nl2br(htmlspecialchars($ticket['encabezado']['descripcion'] ?? '')); ?>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <span class="field-label">Asignado a:</span>
+                <!-- json.encabezado.asignado_a -->
+                <?php echo htmlspecialchars($ticket['encabezado']['asignado_a'] ?? ''); ?>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ==========================================
+         FASE 1 (Cont.): INTEGRANTES
+         Mapeo de arreglo JSON: json.integrantes
+    =========================================== -->
+    <table>
+        <tr class="bg-title">
+            <td colspan="8">Integrantes</td>
+        </tr>
+        <tr class="bg-title">
+            <td colspan="6">Internos</td>
+            <td colspan="2">Externos</td>
+        </tr>
+        <tr class="bg-title" style="font-size: 10px;">
+            <td style="width: 18%;">Nombre</td>
+            <td style="width: 12%;">Sección</td>
+            <td style="width: 18%;">Nombre</td>
+            <td style="width: 12%;">Sección</td>
+            <td style="width: 18%;">Nombre</td>
+            <td style="width: 12%;">Sección</td>
+            <td style="width: 10%;">Nombre</td>
+            <td style="width: 10%;">Compañía</td>
+        </tr>
+        
+        <!-- Bucle PHP para renderizar integrantes formateados en celdas (hasta 4 filas) -->
+        <?php 
+            $integrantes = $ticket['integrantes'] ?? [];
+            for ($i = 0; $i < 4; $i++): 
+                $int1 = $integrantes[$i * 3] ?? null;
+                $int2 = $integrantes[$i * 3 + 1] ?? null;
+                $int3 = $integrantes[$i * 3 + 2] ?? null;
+                $ext  = array_values(array_filter($integrantes, fn($item) => ($item['tipo'] ?? '') === 'externo'))[$i] ?? null;
+        ?>
+        <tr>
+            <td><?php echo htmlspecialchars($int1['nombre'] ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($int1['seccion'] ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($int2['nombre'] ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($int2['seccion'] ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($int3['nombre'] ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($int3['seccion'] ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($ext['nombre'] ?? ''); ?></td>
+            <td><?php echo htmlspecialchars($ext['compania'] ?? ''); ?></td>
+        </tr>
+        <?php endfor; ?>
+    </table>
+
+    <!-- ==========================================
+         FASE 2: ANÁLISIS DE CAUSA
+         Mapeo del objeto JSON: json.investigacion
+    =========================================== -->
+    <table>
+        <tr>
+            <td class="bold">Resultado de la investigación, posible (s) causa(s):</td>
+        </tr>
+        <tr>
+            <td>
+                <!-- json.investigacion.resultado_investigacion -->
+                <div class="content-box">
+                    <?php echo nl2br(htmlspecialchars($ticket['investigacion']['resultado_investigacion'] ?? '')); ?>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="bold">Causa(s) raíz:</td>
+        </tr>
+        <tr>
+            <td>
+                <!-- json.investigacion.causa_raiz -->
+                <div class="content-box">
+                    <?php echo nl2br(htmlspecialchars($ticket['investigacion']['causa_raiz'] ?? '')); ?>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ==========================================
+         FASE 3: PLAN DE ACCIÓN
+         Mapeo de arreglos: json.plan_accion
+    =========================================== -->
+    <table>
+        <tr class="bold">
+            <td style="width: 65%;">Plan de la Acción<br>Acción remedial / inmediata:</td>
+            <td style="width: 15%;" class="center">Fecha</td>
+            <td style="width: 20%;" class="center">Responsable</td>
+        </tr>
+        
+        <!-- json.plan_accion.acciones_remediales -->
+        <?php 
+            $remediales = $ticket['plan_accion']['acciones_remediales'] ?? [[]];
+            foreach ($remediales as $row): 
+        ?>
+        <tr>
+            <td><?php echo htmlspecialchars($row['accion'] ?? ''); ?></td>
+            <td class="center"><?php echo htmlspecialchars($row['fecha'] ?? ''); ?></td>
+            <td class="center"><?php echo htmlspecialchars($row['responsable'] ?? ''); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <!-- Control de Procesos y Cambio Permanente -->
+    <table>
+        <tr class="bold">
+            <td style="width: 65%;">Control de(los) Proceso(s):</td>
+            <td style="width: 15%;" class="center">Fecha</td>
+            <td style="width: 20%;" class="center">Responsable</td>
+        </tr>
+        <!-- json.plan_accion.control_procesos -->
+        <?php 
+            $controles = $ticket['plan_accion']['control_procesos'] ?? [[]];
+            foreach ($controles as $row): 
+        ?>
+        <tr>
+            <td><?php echo htmlspecialchars($row['accion'] ?? ''); ?></td>
+            <td class="center"><?php echo htmlspecialchars($row['fecha'] ?? ''); ?></td>
+            <td class="center"><?php echo htmlspecialchars($row['responsable'] ?? ''); ?></td>
+        </tr>
+        <?php endforeach; ?>
+
+        <tr class="bold">
+            <td>Cambio permanente:</td>
+            <td class="center">Fecha</td>
+            <td class="center">Responsable</td>
+        </tr>
+        <!-- json.plan_accion.cambios_permanentes -->
+        <?php 
+            $cambios = $ticket['plan_accion']['cambios_permanentes'] ?? [[]];
+            foreach ($cambios as $row): 
+        ?>
+        <tr>
+            <td><?php echo htmlspecialchars($row['accion'] ?? ''); ?></td>
+            <td class="center"><?php echo htmlspecialchars($row['fecha'] ?? ''); ?></td>
+            <td class="center"><?php echo htmlspecialchars($row['responsable'] ?? ''); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <!-- ==========================================
+         FASE 4: APROBACIÓN
+         Mapeo del objeto JSON: json.aprobacion
+    =========================================== -->
+    <table>
+        <tr>
+            <td style="width: 35%;">
+                <span class="bold">Aprobado por:</span> 
+                <!-- json.aprobacion.aprobado_por -->
+                <?php echo htmlspecialchars($ticket['aprobacion']['aprobado_por'] ?? ''); ?>
+            </td>
+            <td style="width: 30%;">
+                <span class="bold">Fecha límite:</span> 
+                <!-- json.aprobacion.fecha_limite -->
+                <?php echo htmlspecialchars($ticket['aprobacion']['fecha_limite'] ?? ''); ?>
+            </td>
+            <td style="width: 35%;">
+                <span class="bold">Aceptado por:</span> 
+                <!-- json.aprobacion.aceptado_por -->
+                <?php echo htmlspecialchars($ticket['aprobacion']['aceptado_por'] ?? ''); ?>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ==========================================
+         FASE 5: EVIDENCIA DE LA EFECTIVIDAD
+         Mapeo del objeto JSON: json.efectividad
+    =========================================== -->
+    <table>
+        <tr>
+            <td style="width: 40%;" class="bold">EVIDENCIA DE LA EFECTIVIDAD</td>
+            <td style="width: 30%;">
+                <span class="bold">Fecha de Verificación:</span> 
+                <!-- json.efectividad.fecha_verificacion -->
+                <?php echo htmlspecialchars($ticket['efectividad']['fecha_verificacion'] ?? ''); ?>
+            </td>
+            <td style="width: 30%;">
+                <span class="bold">Verificador:</span> 
+                <!-- json.efectividad.verificador -->
+                <?php echo htmlspecialchars($ticket['efectividad']['verificador'] ?? ''); ?>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <span class="bold">Implantación</span><br>
+                <!-- json.efectividad.implantacion -->
+                <div class="content-box">
+                    <?php echo nl2br(htmlspecialchars($ticket['efectividad']['implantacion'] ?? '')); ?>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <span class="bold">Efectividad de la Acción:</span><br>
+                <!-- json.efectividad.efectividad_accion -->
+                <div class="content-box">
+                    <?php echo nl2br(htmlspecialchars($ticket['efectividad']['efectividad_accion'] ?? '')); ?>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="footer-code">STE-GGC-ART-040-1</div>
+
+</body>
+</html>

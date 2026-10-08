@@ -1,0 +1,45 @@
+{
+  "id_ticket": "AC-2026-001",
+  "fase_actual": "ANALISIS_CAUSA",
+  "encabezado": {
+    "sistema": "APS HK",
+    "producto": "",
+    "num_ac": "19-002",
+    "num_rep_nc": "",
+    "item": "APS HK",
+    "fecha": "2026-10-08",
+    "tipo": "AC",
+    "descripcion": "Se detectó en proceso...",
+    "asignado_a": "Francisco Diaz, Adran Gonzalez"
+  },
+  "integrantes": [
+    { "tipo": "interno", "nombre": "Misael Diaz", "seccion": "Calidad" },
+    { "tipo": "externo", "nombre": "John Doe", "compania": "ACME" }
+  ],
+  "investigacion": {
+    "resultado_investigacion": "",
+    "causa_raiz": ""
+  },
+  "plan_accion": {
+    "acciones_remediales": [
+      { "accion": "", "fecha": "", "responsable": "" }
+    ],
+    "control_procesos": [
+      { "accion": "", "fecha": "", "responsable": "" }
+    ],
+    "cambios_permanentes": [
+      { "accion": "", "fecha": "", "responsable": "" }
+    ]
+  },
+  "aprobacion": {
+    "aprobado_por": "",
+    "fecha_limite": "",
+    "aceptado_por": ""
+  },
+  "efectividad": {
+    "fecha_verificacion": "",
+    "verificador": "",
+    "implantacion": "",
+    "efectividad_accion": ""
+  }
+}
